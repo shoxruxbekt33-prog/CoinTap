@@ -1,1 +1,213 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoinTap</title>
 
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #111827, #020617);
+  color: white;
+  text-align: center;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 25px 15px;
+}
+
+h1 {
+  margin-bottom: 5px;
+  color: #facc15;
+}
+
+.balance {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.coin {
+  width: 220px;
+  height: 220px;
+  margin: 30px auto;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fde047, #eab308);
+  border: 8px solid #fef08a;
+  box-shadow: 0 0 40px #eab308;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
+  cursor: pointer;
+  user-select: none;
+  transition: 0.08s;
+}
+
+.coin:active {
+  transform: scale(0.93);
+}
+
+.energy {
+  font-size: 18px;
+  margin: 15px;
+}
+
+button {
+  width: 90%;
+  padding: 15px;
+  margin: 8px;
+  border: none;
+  border-radius: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  background: #2563eb;
+  color: white;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.info {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 15px;
+  background: rgba(255,255,255,0.08);
+}
+
+#message {
+  min-height: 25px;
+  color: #facc15;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>🪙 CoinTap</h1>
+  <p>Tap qiling va coin yig‘ing!</p>
+
+  <div class="balance">
+    🪙 <span id="balance">0</span>
+  </div>
+
+  <div class="coin" onclick="tapCoin()">
+    🪙
+  </div>
+
+  <div class="energy">
+    ⚡ Energiya: <span id="energy">1000</span> / 1000
+  </div>
+
+  <button onclick="dailyBonus()">
+    🎁 Kunlik bonus
+  </button>
+
+  <button onclick="claimBonus()">
+    🚀 1000 coin bonus
+  </button>
+
+  <div id="message"></div>
+
+  <div class="info">
+    <p>👆 Har bir tap = <b>+1 coin</b></p>
+    <p>⚡ Har bir tap = <b>-1 energiya</b></p>
+    <p>🔋 Energiya vaqt o‘tishi bilan tiklanadi</p>
+  </div>
+
+</div>
+
+<script>
+
+let balance = Number(localStorage.getItem("coinBalance")) || 0;
+let energy = Number(localStorage.getItem("coinEnergy")) || 1000;
+
+let dailyUsed =
+  localStorage.getItem("dailyBonus") === new Date().toDateString();
+
+function updateScreen() {
+  document.getElementById("balance").innerText = balance;
+  document.getElementById("energy").innerText = energy;
+
+  localStorage.setItem("coinBalance", balance);
+  localStorage.setItem("coinEnergy", energy);
+}
+
+function tapCoin() {
+
+  if (energy <= 0) {
+    showMessage("⚡ Energiya tugadi!");
+    return;
+  }
+
+  balance++;
+  energy--;
+
+  updateScreen();
+}
+
+function dailyBonus() {
+
+  if (dailyUsed) {
+    showMessage("🎁 Bugungi bonusni oldingiz!");
+    return;
+  }
+
+  balance += 500;
+  dailyUsed = true;
+
+  localStorage.setItem(
+    "dailyBonus",
+    new Date().toDateString()
+  );
+
+  updateScreen();
+  showMessage("🎉 +500 coin olindi!");
+}
+
+function claimBonus() {
+
+  balance += 1000;
+
+  updateScreen();
+
+  showMessage("🚀 +1000 coin!");
+}
+
+function showMessage(text) {
+
+  document.getElementById("message").innerText = text;
+
+  setTimeout(() => {
+    document.getElementById("message").innerText = "";
+  }, 2000);
+}
+
+/* Energiya tiklanishi */
+
+setInterval(() => {
+
+  if (energy < 1000) {
+    energy++;
+    updateScreen();
+  }
+
+}, 3000);
+
+updateScreen();
+
+</script>
+
+</body>
+</html>
