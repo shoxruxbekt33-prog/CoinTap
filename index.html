@@ -8,85 +8,188 @@
 <style>
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(180deg, #111827, #020617);
+  background: linear-gradient(135deg,#101827,#172554);
   color: white;
-  text-align: center;
+  min-height: 100vh;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 430px;
   margin: auto;
-  padding: 25px 15px;
+  padding: 20px;
 }
 
 h1 {
-  margin-bottom: 5px;
-  color: #facc15;
+  text-align: center;
+  margin: 15px 0 5px;
+  font-size: 32px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #aab4c8;
+  margin-bottom: 20px;
 }
 
 .balance {
-  font-size: 32px;
+  background: linear-gradient(135deg,#2563eb,#7c3aed);
+  border-radius: 25px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+.balance small {
+  color: #dbeafe;
+}
+
+#coins {
+  font-size: 42px;
   font-weight: bold;
-  margin: 20px 0;
+  margin: 8px 0;
 }
 
-.coin {
-  width: 220px;
-  height: 220px;
-  margin: 30px auto;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #fde047, #eab308);
-  border: 8px solid #fef08a;
-  box-shadow: 0 0 40px #eab308;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 80px;
-  cursor: pointer;
-  user-select: none;
-  transition: 0.08s;
-}
-
-.coin:active {
-  transform: scale(0.93);
-}
-
-.energy {
+.money {
   font-size: 18px;
-  margin: 15px;
+  color: #dbeafe;
+}
+
+.energy-box {
+  margin-top: 15px;
+  background: #1e293b;
+  border-radius: 15px;
+  padding: 15px;
+}
+
+.energy-bar {
+  height: 10px;
+  background: #334155;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+#energyFill {
+  height: 100%;
+  width: 100%;
+  background: #22c55e;
+  transition: .2s;
+}
+
+.tap {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(145deg,#facc15,#f59e0b);
+  font-size: 70px;
+  display: block;
+  margin: 25px auto;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(245,158,11,.4);
+}
+
+.tap:active {
+  transform: scale(.94);
 }
 
 button {
-  width: 90%;
-  padding: 15px;
-  margin: 8px;
-  border: none;
-  border-radius: 15px;
-  font-size: 18px;
-  font-weight: bold;
-  background: #2563eb;
-  color: white;
+  cursor: pointer;
 }
 
-button:active {
-  transform: scale(0.97);
+.menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.menu button {
+  border: none;
+  border-radius: 15px;
+  padding: 15px 8px;
+  background: #1e293b;
+  color: white;
+  font-size: 15px;
+}
+
+.menu button:hover {
+  background: #334155;
+}
+
+.withdraw {
+  margin-top: 20px;
+  background: #fff;
+  color: #111827;
+  border-radius: 22px;
+  padding: 20px;
+  display: none;
+}
+
+.withdraw h2 {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 7px 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.withdrawBtn {
+  width: 100%;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  background: #16a34a;
+  color: white;
+  font-size: 17px;
+  margin-top: 8px;
+}
+
+.closeBtn {
+  width: 100%;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  background: #64748b;
+  color: white;
+  margin-top: 8px;
+}
+
+.daily {
+  margin-top: 15px;
+  width: 100%;
+  border: none;
+  padding: 15px;
+  border-radius: 15px;
+  background: #eab308;
+  color: #111827;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .info {
   margin-top: 20px;
-  padding: 15px;
+  background: #1e293b;
   border-radius: 15px;
-  background: rgba(255,255,255,0.08);
+  padding: 15px;
+  color: #cbd5e1;
+  line-height: 1.7;
 }
 
 #message {
-  min-height: 25px;
-  color: #facc15;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -95,117 +198,287 @@ button:active {
 
 <div class="container">
 
-  <h1>🪙 CoinTap</h1>
-  <p>Tap qiling va coin yig‘ing!</p>
+<h1>🪙 CoinTap</h1>
+<div class="subtitle">Coin yig‘ing va bonuslarni oling</div>
 
-  <div class="balance">
-    🪙 <span id="balance">0</span>
+<div class="balance">
+  <small>COIN BALANS</small>
+  <div id="coins">0</div>
+  <div class="money">💰 1 coin = 1 so‘m</div>
+</div>
+
+<div class="energy-box">
+  ⚡ Energy: <b><span id="energy">1000</span></b> / 1000
+
+  <div class="energy-bar">
+    <div id="energyFill"></div>
   </div>
+</div>
 
-  <div class="coin" onclick="tapCoin()">
-    🪙
-  </div>
+<button class="tap" onclick="tapCoin()">🪙</button>
 
-  <div class="energy">
-    ⚡ Energiya: <span id="energy">1000</span> / 1000
-  </div>
+<div class="menu">
 
-  <button onclick="dailyBonus()">
-    🎁 Kunlik bonus
+  <button onclick="openWithdraw()">
+    💸 Withdraw
   </button>
 
-  <button onclick="claimBonus()">
-    🚀 1000 coin bonus
+  <button onclick="showBalance()">
+    🪙 Balans
   </button>
 
-  <div id="message"></div>
+</div>
 
-  <div class="info">
-    <p>👆 Har bir tap = <b>+1 coin</b></p>
-    <p>⚡ Har bir tap = <b>-1 energiya</b></p>
-    <p>🔋 Energiya vaqt o‘tishi bilan tiklanadi</p>
-  </div>
+<button class="daily" id="dailyBtn" onclick="dailyBonus()">
+  🎁 Daily Bonus +1000
+</button>
+
+<div class="info">
+  <b>📌 Qoidalar</b><br>
+  • 1 coin = 1 so‘m<br>
+  • Minimal Withdraw = 10 000 coin<br>
+  • Withdraw so‘rovi admin tomonidan tekshiriladi
+</div>
+
+<div id="message"></div>
+
+<div class="withdraw" id="withdrawBox">
+
+  <h2>💸 Pul yechish</h2>
+
+  <p>
+    Balansingiz:
+    <b><span id="withdrawBalance">0</span> coin</b>
+  </p>
+
+  <p style="margin-top:5px">
+    Minimal: <b>10 000 coin</b>
+  </p>
+
+  <input
+    id="telegram"
+    type="text"
+    placeholder="Telegram username (@username)"
+  >
+
+  <input
+    id="amount"
+    type="number"
+    placeholder="Coin miqdori"
+    min="10000"
+  >
+
+  <input
+    id="payment"
+    type="text"
+    placeholder="Karta / Click / Payme raqami"
+  >
+
+  <button class="withdrawBtn" onclick="withdraw()">
+    📤 So‘rov yuborish
+  </button>
+
+  <button class="closeBtn" onclick="closeWithdraw()">
+    Yopish
+  </button>
+
+</div>
 
 </div>
 
 <script>
 
-let balance = Number(localStorage.getItem("coinBalance")) || 0;
-let energy = Number(localStorage.getItem("coinEnergy")) || 1000;
+let coins = Number(localStorage.getItem("coins")) || 0;
+let energy = Number(localStorage.getItem("energy")) || 1000;
 
-let dailyUsed =
-  localStorage.getItem("dailyBonus") === new Date().toDateString();
+const MAX_ENERGY = 1000;
+const TAP_COST = 1;
+const DAILY_BONUS = 1000;
+const MIN_WITHDRAW = 10000;
 
-function updateScreen() {
-  document.getElementById("balance").innerText = balance;
-  document.getElementById("energy").innerText = energy;
+function save() {
+  localStorage.setItem("coins", coins);
+  localStorage.setItem("energy", energy);
+}
 
-  localStorage.setItem("coinBalance", balance);
-  localStorage.setItem("coinEnergy", energy);
+function update() {
+
+  document.getElementById("coins").textContent =
+    coins.toLocaleString();
+
+  document.getElementById("energy").textContent =
+    energy;
+
+  document.getElementById("energyFill").style.width =
+    (energy / MAX_ENERGY * 100) + "%";
+
+  document.getElementById("withdrawBalance").textContent =
+    coins.toLocaleString();
+
+  save();
 }
 
 function tapCoin() {
 
-  if (energy <= 0) {
-    showMessage("⚡ Energiya tugadi!");
+  if (energy < TAP_COST) {
+    showMessage("⚡ Energy tugadi!");
     return;
   }
 
-  balance++;
-  energy--;
+  coins += 1;
+  energy -= 1;
 
-  updateScreen();
+  update();
+}
+
+function showBalance() {
+
+  showMessage(
+    "🪙 Balansingiz: " +
+    coins.toLocaleString() +
+    " coin = " +
+    coins.toLocaleString() +
+    " so‘m"
+  );
+
+}
+
+function openWithdraw() {
+
+  document.getElementById("withdrawBox").style.display = "block";
+
+  document.getElementById("withdrawBalance").textContent =
+    coins.toLocaleString();
+
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
+
+function closeWithdraw() {
+
+  document.getElementById("withdrawBox").style.display = "none";
+
+}
+
+function withdraw() {
+
+  const telegram =
+    document.getElementById("telegram").value.trim();
+
+  const amount =
+    Number(document.getElementById("amount").value);
+
+  const payment =
+    document.getElementById("payment").value.trim();
+
+  if (!telegram) {
+    showMessage("❌ Telegram username kiriting!");
+    return;
+  }
+
+  if (!amount || amount < MIN_WITHDRAW) {
+    showMessage("❌ Minimal yechish 10 000 coin!");
+    return;
+  }
+
+  if (amount > coins) {
+    showMessage("❌ Balansingiz yetarli emas!");
+    return;
+  }
+
+  if (!payment) {
+    showMessage("❌ Karta yoki to‘lov raqamini kiriting!");
+    return;
+  }
+
+  const request = {
+    telegram: telegram,
+    amount: amount,
+    payment: payment,
+    status: "Kutilmoqda",
+    date: new Date().toLocaleString()
+  };
+
+  localStorage.setItem(
+    "withdrawRequest",
+    JSON.stringify(request)
+  );
+
+  coins -= amount;
+
+  update();
+
+  showMessage(
+    "✅ Withdraw so‘rovi yuborildi! Admin tasdiqlashini kuting."
+  );
+
+  document.getElementById("telegram").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("payment").value = "";
+
 }
 
 function dailyBonus() {
 
-  if (dailyUsed) {
-    showMessage("🎁 Bugungi bonusni oldingiz!");
+  const today = new Date().toISOString().slice(0,10);
+
+  const lastBonus =
+    localStorage.getItem("lastDailyBonus");
+
+  if (lastBonus === today) {
+
+    showMessage("🎁 Bugungi bonusni olib bo‘lgansiz!");
+
     return;
   }
 
-  balance += 500;
-  dailyUsed = true;
+  coins += DAILY_BONUS;
 
   localStorage.setItem(
-    "dailyBonus",
-    new Date().toDateString()
+    "lastDailyBonus",
+    today
   );
 
-  updateScreen();
-  showMessage("🎉 +500 coin olindi!");
-}
+  document.getElementById("dailyBtn").textContent =
+    "✅ Bonus olindi";
 
-function claimBonus() {
+  update();
 
-  balance += 1000;
+  showMessage(
+    "🎁 +1000 coin qo‘shildi!"
+  );
 
-  updateScreen();
-
-  showMessage("🚀 +1000 coin!");
 }
 
 function showMessage(text) {
 
-  document.getElementById("message").innerText = text;
+  const msg =
+    document.getElementById("message");
+
+  msg.textContent = text;
 
   setTimeout(() => {
-    document.getElementById("message").innerText = "";
-  }, 2000);
+    msg.textContent = "";
+  }, 4000);
+
 }
 
-/* Energiya tiklanishi */
-
+// Energy avtomatik tiklanadi
 setInterval(() => {
 
-  if (energy < 1000) {
-    energy++;
-    updateScreen();
+  if (energy < MAX_ENERGY) {
+
+    energy += 1;
+
+    update();
+
   }
 
 }, 3000);
 
-updateScreen();
+update();
 
 </script>
 
